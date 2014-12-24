@@ -6,6 +6,8 @@ var net = require('net');
 var host = "localhost";
 var motd = "220 "+host+" ESMTP IRCMail\r\n";
 
+var inbox = {};
+
 net.createServer(function(conn) {
 	conn.write(motd);
 
@@ -31,7 +33,8 @@ net.createServer(function(conn) {
 					body: body
 				};
 
-				console.log(JSON.stringify(letter));
+				if(!inbox[to]) inbox[to] = [];
+				inbox[to].push(letter);
 
 				// prevent leaking for other messages
 				body = "";
