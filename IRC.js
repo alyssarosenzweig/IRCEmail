@@ -61,7 +61,7 @@ IRCServer.prototype.onData = function(connection, data) {
 			connection.write(that.host+" 353 "+connection.nick+" = "+commands[1]+" :"+connection.nick+"\r\n");
 			connection.write(that.host+" 366 "+connection.nick+" "+commands[1]+" :End of /NAMES list."+"\r\n");
 		} else if(cmd == "PRIVMSG") {
-			that.onMessage(connection, commands[1], commands[2].slice(1));
+			that.onMessage(connection, commands[1], commands[2].slice(2).join(" ").slice(1));
 		}
 	});
 }
