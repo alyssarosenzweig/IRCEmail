@@ -8,6 +8,8 @@ var smtpserver = new SMTP(host);
 var ircserver = new IRC(":"+host, "EMAIL", function(connection, channel, message) {
 	if(!connection.authed) connection.authed = [];
 
+	console.log(message);
+
 	if(connection.authed.indexOf(channel) > -1) {
 		var account = smtpserver.inbox[channel.slice(1)];
 
