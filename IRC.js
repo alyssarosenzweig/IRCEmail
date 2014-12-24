@@ -3,11 +3,13 @@
 
 var net = require('net');
 
-function IRCServer(host) {
+function IRCServer(host, messageHandler) {
 	var that = this;
 
 	this.host = host;
 	console.log(host);
+
+	this.onMessage = messageHandler;
 
 	this.socket = net.createServer(function(connection) {
 		that.onConnection(connection);
@@ -58,6 +60,8 @@ IRCServer.prototype.onData = function(connection, data) {
 			connection.write(that.host+" 333 "+connection.nick+" "+commands[1]+" email 0\r\n");
 			connection.write(that.host+" 353 "+connection.nick+" = "+commands[1]+" :"+connection.nick+"\r\n");
 			connection.write(that.host+" 366 "+connection.nick+" "+commands[1]+" :End of /NAMES list."+"\r\n");
+		} else if(cmd == "PRIVMSG") {
+			that.onMessage(commands[1], commands[2].slice(1));
 		}
 	});
 }
