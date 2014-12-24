@@ -3,11 +3,11 @@
 
 var net = require('net');
 
-function IRCServer(host, messageHandler) {
+function IRCServer(host, nick, messageHandler) {
 	var that = this;
 
 	this.host = host;
-	console.log(host);
+	this.mask = nick+"!~"+nick+"@unaffiliated/"+nick;
 
 	this.onMessage = messageHandler;
 
