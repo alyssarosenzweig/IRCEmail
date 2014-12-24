@@ -1,10 +1,22 @@
 var IRC = require("./IRC");
+var SMTP = require("./SMTP");
 
-var server = new IRC(":localhost", "EMAIL", function(connection, channel, message) {
+var host = "localhost";
+
+var smtpserver = new SMTP(host);
+
+var ircserver = new IRC(":"+host, "EMAIL", function(connection, channel, message) {
 	if(!connection.authed) connection.authed = [];
 
 	if(connection.authed.indexOf(channel) > -1) {
-		connection.write(":"+server.mask+" PRIVMSG "+channel+" :Unfortunately, email isn't actually implemented yet...\r\n");
+		var account = smtpserver.inbox[channel];
+
+		if(!account) {
+			connection.write(":"+server.mask+" PRIVMSG "+channel+" :No such account\r\n");
+		} else {
+			connection.write(":"+server.mask+" PRIVMSG "+channel+" :You have "+account.length+" messages\r\n");
+		}
+
 	} else {
 		if(message == "test") {
 			connection.write(":"+server.mask+" PRIVMSG "+channel+" :Authenticating with password "+message+"\r\n");
@@ -15,4 +27,4 @@ var server = new IRC(":localhost", "EMAIL", function(connection, channel, messag
 	}
 });
 
-server.listen();
+ircserver.listen();
