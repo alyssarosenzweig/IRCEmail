@@ -7,6 +7,8 @@ function SMTPServer(host) {
 	var motd = "220 "+host+" ESMTP IRCMail\r\n";
 	this.inbox = {};
 
+	var that = this;
+
 	net.createServer(function(conn) {
 		conn.write(motd);
 
@@ -32,8 +34,8 @@ function SMTPServer(host) {
 						body: body
 					};
 
-					if(!this.inbox[to]) this.inbox[to] = [];
-					this.inbox[to].push(letter);
+					if(!that.inbox[to]) that.inbox[to] = [];
+					that.inbox[to].push(letter);
 
 					// prevent leaking for other messages
 					body = "";
