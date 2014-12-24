@@ -9,12 +9,18 @@ var ircserver = new IRC(":"+host, "EMAIL", function(connection, channel, message
 	if(!connection.authed) connection.authed = [];
 
 	if(connection.authed.indexOf(channel) > -1) {
-		var account = smtpserver.inbox[channel];
+		var account = smtpserver.inbox[channel.slice(1)];
 
 		if(!account) {
 			connection.write(":"+ircserver.mask+" PRIVMSG "+channel+" :No such account\r\n");
 		} else {
-			connection.write(":"+ircserver.mask+" PRIVMSG "+channel+" :You have "+account.length+" messages\r\n");
+			if(message == "help") {
+				connection.write(":"+ircserver.mask+" PRIVMSG "+channel+" :type count, get [msg id]\r\n");
+			} else if(message == "count") {
+				connection.write(":"+ircserver.mask+" PRIVMSG "+channel+" :You have "+account.length+" messages\r\n");
+			} else if(message.split(" ")[0] == "get") {
+				connection.write(":"+ircserver.mask+" PRIVMSG "+channel+" :"+JSON.stringify(account[message.split(" ")[1]]));
+			}
 		}
 
 	} else {
