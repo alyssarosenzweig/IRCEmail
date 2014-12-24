@@ -65,3 +65,5 @@ function SMTPServer(host) {
 		});
 	}).listen(25);
 }
+
+module.exports = SMTPServer;
