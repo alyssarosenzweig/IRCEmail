@@ -21,7 +21,7 @@ var ircserver = new IRC(":"+host, "EMAIL", function(connection, channel, message
 			} else if(message == "count") {
 				connection.write(":"+ircserver.mask+" PRIVMSG "+channel+" :You have "+account.length+" messages\r\n");
 			} else if(message.split(" ")[0] == "get") {
-				connection.write(":"+ircserver.mask+" PRIVMSG "+channel+" :"+JSON.stringify(account[message.split(" ")[1]]));
+				connection.write(":"+ircserver.mask+" PRIVMSG "+channel+" :"+JSON.stringify(account[message.split(" ")[1]])+"\r\n");
 			}
 		}
 
