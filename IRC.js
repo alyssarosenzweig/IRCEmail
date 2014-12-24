@@ -4,7 +4,11 @@
 var net = require('net');
 
 function IRCServer() {
-	this.socket = net.createServer(this.onConnection);
+	var that = this;
+
+	this.socket = net.createServer(function(connection) {
+		that.onConnection(connection);
+	});
 }
 
 IRCServer.prototype.listen = function(port) {
